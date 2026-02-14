@@ -1,0 +1,10 @@
+fastapi
+uvicorn[standard]
+pydantic-settings
+python-multipart
+
+ultralytics
+opencv-python-headless
+
+torch
+torchvision
