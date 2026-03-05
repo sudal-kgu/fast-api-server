@@ -10,6 +10,18 @@ detector = WasteDetector()
 storage = ImageStorage()
 
 
+def _build_detected_items(results: list, request_id: str) -> list[DetectedItem]:
+    detected_items = []
+    for item in results:
+        filename = storage.save_crop(item["crop"], request_id)
+        detected_items.append(DetectedItem(
+            category=item["category"],
+            confidence=item["confidence"],
+            filename=filename,
+        ))
+    return detected_items
+
+
 @router.post("/extracts", response_model=ExtractResponse)
 def extract(data: ExtractRequest):
     image = storage.load_image(data.request_id)
@@ -17,15 +29,7 @@ def extract(data: ExtractRequest):
         raise HTTPException(status_code=404, detail="Image not found.")
 
     results = detector.detect(image)
-
-    detected_items = []
-    for item in results:
-        filename = storage.save_crop(item["crop"], data.request_id)
-        detected_items.append(DetectedItem(
-            category=item["category"],
-            confidence=item["confidence"],
-            filename=filename,
-        ))
+    detected_items = _build_detected_items(results, data.request_id)
 
     return ExtractResponse(
         request_id=data.request_id,
