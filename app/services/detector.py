@@ -26,11 +26,7 @@ class WasteDetector:
         return DeviceType.CPU
 
     def detect(self, image: np.ndarray) -> list[dict]:
-        results = self.model.predict(
-            source=image,
-            conf=settings.YOLO_CONFIDENCE,
-            verbose=False,
-        )
+        results = self._run_model(image)
 
         detected_items = []
         for result in results:
@@ -40,6 +36,13 @@ class WasteDetector:
                     detected_items.append(item)
 
         return detected_items
+
+    def _run_model(self, image: np.ndarray):
+        return self.model.predict(
+            source=image,
+            conf=settings.YOLO_CONFIDENCE,
+            verbose=False,
+        )
 
     def _parse_box(self, image: np.ndarray, box) -> dict | None:
         crop = self._get_padded_crop(image, box)
