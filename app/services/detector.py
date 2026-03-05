@@ -35,20 +35,22 @@ class WasteDetector:
         detected_items = []
         for result in results:
             for box in result.boxes:
-                crop = self._get_padded_crop(image, box)
-                if crop.size == 0:
-                    continue
-
-                category = self.model.names[int(box.cls[0])]
-                confidence = round(float(box.conf[0]), 3)
-
-                detected_items.append({
-                    "category": category,
-                    "confidence": confidence,
-                    "crop": crop,
-                })
+                item = self._parse_box(image, box)
+                if item is not None:
+                    detected_items.append(item)
 
         return detected_items
+
+    def _parse_box(self, image: np.ndarray, box) -> dict | None:
+        crop = self._get_padded_crop(image, box)
+        if crop.size == 0:
+            return None
+
+        return {
+            "category": self.model.names[int(box.cls[0])],
+            "confidence": round(float(box.conf[0]), 3),
+            "crop": crop,
+        }
 
     def _get_padded_crop(self, img: np.ndarray, box) -> np.ndarray:
         h, w = img.shape[:2]
