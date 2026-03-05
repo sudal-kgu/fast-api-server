@@ -1,9 +1,16 @@
 import cv2
 import numpy as np
 import torch
+from enum import Enum
 from ultralytics import YOLO
 
 from app.core.config import settings
+
+
+class DeviceType(str, Enum):
+    CUDA = "cuda"
+    MPS = "mps"
+    CPU = "cpu"
 
 
 class WasteDetector:
@@ -11,12 +18,12 @@ class WasteDetector:
         self.device = self._get_device()
         self.model = YOLO(settings.YOLO_MODEL_PATH).to(self.device)
 
-    def _get_device(self) -> str:
+    def _get_device(self) -> DeviceType:
         if torch.cuda.is_available():
-            return "cuda"
+            return DeviceType.CUDA
         if torch.backends.mps.is_available():
-            return "mps"
-        return "cpu"
+            return DeviceType.MPS
+        return DeviceType.CPU
 
     def detect(self, image: np.ndarray) -> list[dict]:
         results = self.model.predict(
