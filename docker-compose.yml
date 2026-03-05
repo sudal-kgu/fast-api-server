@@ -1,0 +1,15 @@
+services:
+  fast-api-server:
+    build: .
+    container_name: fast-api-server
+    ports:
+      - "8989:8000"
+    volumes:
+      - ${HOST_INPUTS_DIR:-./images/inputs}:/app/images/inputs
+      - ${HOST_OUTPUTS_DIR:-./images/outputs}:/app/images/outputs
+    environment:
+      - YOLO_MODEL_PATH=${YOLO_MODEL_PATH:-models/best.pt}
+      - ORIGIN_IMAGE_DIR=${ORIGIN_IMAGE_DIR:-/app/images/inputs}
+      - CROP_IMAGE_DIR=${CROP_IMAGE_DIR:-/app/images/outputs}
+      - YOLO_CONFIDENCE=${YOLO_CONFIDENCE:-0.25}
+    restart: always
