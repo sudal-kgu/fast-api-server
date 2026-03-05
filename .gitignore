@@ -12,9 +12,6 @@ venv/
 # Environment
 .env
 
-# YOLO model weights
-models/*.pt
-
 # Images
 images/
 
