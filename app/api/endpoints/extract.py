@@ -2,12 +2,9 @@ from fastapi import APIRouter, HTTPException
 
 from app.schemas.request import ExtractRequest
 from app.schemas.response import ExtractResponse, DetectedItem
-from app.services.detector import WasteDetector
-from app.utils.storage import ImageStorage
+from app.dependencies import detector, storage
 
 router = APIRouter()
-detector = WasteDetector()
-storage = ImageStorage()
 
 
 def _build_detected_items(results: list, request_id: str) -> list[DetectedItem]:
