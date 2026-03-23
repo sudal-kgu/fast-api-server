@@ -13,6 +13,7 @@ async def init_rabbitmq() -> AbstractRobustConnection | None:
         channel = await connection.channel()
 
         producer = ResultMessageProducer(channel)
+        await producer.initialize()
         consumer = RequestMessageConsumer(producer)
         await consumer.start_consuming(channel)
 
