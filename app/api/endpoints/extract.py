@@ -1,35 +1,15 @@
 from fastapi import APIRouter, HTTPException
 
 from app.schemas.request import ExtractRequest
-from app.schemas.response import ExtractResponse, DetectedItem
-from app.dependencies import detector, storage
+from app.schemas.response import ExtractResponse
+from app.services.analysis import run_analysis
 
 router = APIRouter()
 
 
-def _build_detected_items(results: list, request_id: str) -> list[DetectedItem]:
-    detected_items = []
-    for item in results:
-        filename = storage.save_crop(item["crop"], request_id)
-        detected_items.append(DetectedItem(
-            category=item["category"],
-            confidence=item["confidence"],
-            filename=filename,
-        ))
-    return detected_items
-
-
 @router.post("/extracts", response_model=ExtractResponse)
 def extract(data: ExtractRequest):
-    image = storage.load_image(data.request_id)
-    if image is None:
+    result = run_analysis(data.request_id)
+    if result is None:
         raise HTTPException(status_code=404, detail="Image not found.")
-
-    results = detector.detect(image)
-    detected_items = _build_detected_items(results, data.request_id)
-
-    return ExtractResponse(
-        request_id=data.request_id,
-        count=len(detected_items),
-        detected_items=detected_items,
-    )
+    return ExtractResponse(**result)
