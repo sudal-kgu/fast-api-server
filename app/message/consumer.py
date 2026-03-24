@@ -47,7 +47,7 @@ class RequestMessageConsumer:
             print(f"[MQ] Analysis failed for request_id: {request_id}, attempt: {retry_count + 1}, error: {e}")
             await message.ack()
 
-            if retry_count < MAX_RETRY_COUNT - 1:
+            if retry_count < MAX_RETRY_COUNT:
                 retry_message = Message(
                     body=message.body,
                     headers={"x-retry-count": retry_count + 1},
