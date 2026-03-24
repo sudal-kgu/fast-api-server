@@ -12,4 +12,17 @@ services:
       - ORIGIN_IMAGE_DIR=${ORIGIN_IMAGE_DIR:-/app/images/inputs}
       - CROP_IMAGE_DIR=${CROP_IMAGE_DIR:-/app/images/outputs}
       - YOLO_CONFIDENCE=${YOLO_CONFIDENCE:-0.25}
+      - RABBITMQ_HOST=${RABBITMQ_HOST:-trash-rabbitmq}
+      - RABBITMQ_PORT=${RABBITMQ_PORT:-5672}
+      - RABBITMQ_USERNAME=${RABBITMQ_USERNAME}
+      - RABBITMQ_PASSWORD=${RABBITMQ_PASSWORD}
+      - RABBITMQ_EXCHANGE=${RABBITMQ_EXCHANGE:-analysis.exchange}
+      - RABBITMQ_REQUEST_QUEUE=${RABBITMQ_REQUEST_QUEUE:-analysis.request.queue}
+      - RABBITMQ_RESULT_ROUTING_KEY=${RABBITMQ_RESULT_ROUTING_KEY:-analysis.result}
+    networks:
+      - trash-network
     restart: always
+
+networks:
+  trash-network:
+    external: true
