@@ -22,4 +22,10 @@ pipeline {
             }
         }
     }
+
+    post {
+        success {
+            sh 'docker image prune -f'
+        }
+    }
 }
