@@ -15,6 +15,7 @@ pipeline {
 
             steps {
                 sh """
+                    docker compose down || true
                     RABBITMQ_USERNAME=${env.RABBITMQ_PROD_USERNAME} \
                     RABBITMQ_PASSWORD=${env.RABBITMQ_PROD_PASSWORD} \
                     docker compose up -d --build
