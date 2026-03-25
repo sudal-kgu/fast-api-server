@@ -8,8 +8,12 @@ from app.message.consumer import RequestMessageConsumer
 
 async def init_rabbitmq() -> AbstractRobustConnection | None:
     try:
-        url = f"amqp://{settings.RABBITMQ_USERNAME}:{settings.RABBITMQ_PASSWORD}@{settings.RABBITMQ_HOST}:{settings.RABBITMQ_PORT}/"
-        connection = await connect_robust(url)
+        connection = await connect_robust(
+            host=settings.RABBITMQ_HOST,
+            port=settings.RABBITMQ_PORT,
+            login=settings.RABBITMQ_USERNAME,
+            password=settings.RABBITMQ_PASSWORD,
+        )
         channel = await connection.channel()
 
         producer = ResultMessageProducer(channel)
