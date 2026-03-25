@@ -2,7 +2,7 @@ from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    YOLO_MODEL_PATH: str = "models/best.pt" # 아직 없음
+    YOLO_MODEL_PATH: str = "models/best.pt" 
     ORIGIN_IMAGE_DIR: str = "./images/inputs"
     CROP_IMAGE_DIR: str = "./images/outputs"
     YOLO_CONFIDENCE: float = 0.25
