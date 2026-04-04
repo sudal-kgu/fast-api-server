@@ -9,6 +9,7 @@ services:
       - ${HOST_INPUTS_DIR:-./images/inputs}:/app/images/inputs
       - ${HOST_OUTPUTS_DIR:-./images/outputs}:/app/images/outputs
     environment:
+      - UESR=${APP_USER}
       - YOLO_MODEL_PATH=${YOLO_MODEL_PATH:-models/best.pt}
       - ORIGIN_IMAGE_DIR=${ORIGIN_IMAGE_DIR:-/app/images/inputs}
       - CROP_IMAGE_DIR=${CROP_IMAGE_DIR:-/app/images/outputs}
