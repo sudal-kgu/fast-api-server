@@ -2,6 +2,7 @@ services:
   fast-api-server:
     build: .
     container_name: fast-api-server
+    user: "${APP_UID}:${APP_GID}"
     ports:
       - "8989:8000"
     volumes:
