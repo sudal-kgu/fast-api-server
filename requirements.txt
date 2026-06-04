@@ -6,6 +6,7 @@ aio-pika
 
 ultralytics
 opencv-python-headless
+google-genai
 
 torch
 torchvision

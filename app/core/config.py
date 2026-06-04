@@ -6,6 +6,7 @@ class Settings(BaseSettings):
     ORIGIN_IMAGE_DIR: str = "./images/inputs"
     CROP_IMAGE_DIR: str = "./images/outputs"
     YOLO_CONFIDENCE: float = 0.50
+    GEMINI_API_KEY: str = ""
 
     RABBITMQ_HOST: str = "localhost"
     RABBITMQ_PORT: int = 5672
