@@ -13,7 +13,8 @@ services:
       - YOLO_MODEL_PATH=${YOLO_MODEL_PATH:-models/best.pt}
       - ORIGIN_IMAGE_DIR=${ORIGIN_IMAGE_DIR:-/app/images/inputs}
       - CROP_IMAGE_DIR=${CROP_IMAGE_DIR:-/app/images/outputs}
-      - YOLO_CONFIDENCE=${YOLO_CONFIDENCE:-0.25}
+      - YOLO_CONFIDENCE=${YOLO_CONFIDENCE:-0.50}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
       - RABBITMQ_HOST=${RABBITMQ_HOST:-trash-rabbitmq}
       - RABBITMQ_PORT=${RABBITMQ_PORT:-5672}
       - RABBITMQ_USERNAME=${RABBITMQ_USERNAME}
