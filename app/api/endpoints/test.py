@@ -4,6 +4,7 @@ import cv2
 
 from app.schemas.response import ExtractResponse, DetectedItem
 from app.dependencies import detector, storage
+from app.services.llm_fallback import classify_with_llm
 
 router = APIRouter()
 
@@ -17,17 +18,35 @@ def test_detect(file: UploadFile = File(...)):
 
     results = detector.detect(image)
 
-    detected_items = []
-    for item in results:
-        filename = storage.save_crop(item["crop"], REQUEST_ID)
-        detected_items.append(DetectedItem(
-            category=item["category"],
-            confidence=item["confidence"],
-            filename=filename,
-        ))
+    if results:
+        detected_items = []
+        for item in results:
+            filename = storage.save_crop(item["crop"], REQUEST_ID)
+            detected_items.append(DetectedItem(
+                category=item["category"],
+                confidence=item["confidence"],
+                filename=filename,
+            ))
+        return ExtractResponse(
+            request_id=REQUEST_ID,
+            count=len(detected_items),
+            detected_items=detected_items,
+            source="yolo",
+        )
 
+    category = classify_with_llm(image)
+    if category is None:
+        return ExtractResponse(
+            request_id=REQUEST_ID,
+            count=0,
+            detected_items=[],
+            source="llm",
+        )
+
+    filename = storage.save_crop(image, REQUEST_ID)
     return ExtractResponse(
         request_id=REQUEST_ID,
-        count=len(detected_items),
-        detected_items=detected_items,
+        count=1,
+        detected_items=[DetectedItem(category=category, confidence=None, filename=filename)],
+        source="llm",
     )
