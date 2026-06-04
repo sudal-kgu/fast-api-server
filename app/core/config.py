@@ -5,7 +5,7 @@ class Settings(BaseSettings):
     YOLO_MODEL_PATH: str = "models/best.pt" 
     ORIGIN_IMAGE_DIR: str = "./images/inputs"
     CROP_IMAGE_DIR: str = "./images/outputs"
-    YOLO_CONFIDENCE: float = 0.25
+    YOLO_CONFIDENCE: float = 0.50
 
     RABBITMQ_HOST: str = "localhost"
     RABBITMQ_PORT: int = 5672
