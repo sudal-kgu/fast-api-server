@@ -20,6 +20,7 @@ pipeline {
                     RABBITMQ_PASSWORD=${env.RABBITMQ_PROD_PASSWORD} \
                     HOST_INPUTS_DIR=${env.IMAGE_PATH_FROM_SPRING}/inputs \
                     HOST_OUTPUTS_DIR=${env.IMAGE_PATH_FROM_SPRING}/outputs \
+                    GEMINI_API_KEY=${env.GEMINI_API_KEY} \
                     docker compose up -d --build
                 """
             }
