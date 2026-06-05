@@ -6,8 +6,6 @@ from PIL import Image as PILImage
 
 logger = logging.getLogger(__name__)
 
-CONFIDENCE_THRESHOLD = 0.50
-
 VALID_CLASSES = {
     "공통(가구류)", "고철(고철류)", "비철금속(고철류)", "주전자(고철류)", "프라이팬(고철류)",
     "도마(나무)", "액자(나무)", "장식품(나무)", "주걱(나무)", "주방용품(나무)",
